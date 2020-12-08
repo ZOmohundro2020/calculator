@@ -1,0 +1,23 @@
+.container {
+    display: grid;
+    grid-template-columns: 50px 50px 50px 50px;
+    grid-template-rows: 50px 50px 50px 50px 50px;
+    border: 2px solid;
+    justify-content: center;
+    align-items: stretch;
+    align-content: center;
+}
+
+/* .container button {
+    
+    background-color: rgb(233, 227, 227);
+} */
+
+
+
+#plus, #equals {
+    grid-row-end: span 2;
+}
+#zero {
+    grid-column-end: span 2;
+}
