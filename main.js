@@ -1,13 +1,22 @@
 let displayFieldContent = 0;
+let userInput ='';
 const displayDiv = document.getElementById('display');
 
+//store and update user input and then refresh display field
+function storeUserInput (input){
+    userInput = `${userInput}${input}`;
+    displayFieldContent = userInput;
+    refreshDisplayField();
+}
 
-const buttonInputs = document.querySelectorAll('.button');
+//add a listener to all numeric buttons that returns an integer
+const buttonInputs = document.querySelectorAll('.button.number');
 buttonInputs.forEach(element => {
     element.addEventListener('click', (e) => {
-        console.log(e.target.id);
-        displayFieldContent = e.target.id;
-        refreshDisplayField();
+        storeUserInput(parseInt(e.target.innerText));
+        //displayFieldContent = e.target.innerText;
+        //refreshDisplayField();
+        
     });
 });
 
@@ -48,4 +57,4 @@ function operate (a,b,operator){
     return answer;
 }
 
-console.log(operate(4,2,"divide"));
+//console.log(operate(4,2,"divide"));
