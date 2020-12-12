@@ -1,31 +1,51 @@
 let displayFieldContent = 0;
-let userInput ='';
+let userInputA ='';
+let userInputB ='';
+let userOperatorInput ='';
+let toggle = false;
 const displayDiv = document.getElementById('display');
 
 //store and update user input and then refresh display field
-function storeUserInput (input){
-    if (userInput.length < 15){
-        userInput = `${userInput}${input}`;
-        displayFieldContent = userInput;
-        refreshDisplayField();
-    }
+function storeUserInput (input,toggle){
+    console.log(`input is ${input} toggle is ${toggle}`);
+        if (userInputA.length < 15 && toggle === false){
+            userInputA = `${userInputA}${input}`;
+            displayFieldContent = userInputA;
+            refreshDisplayField();
+        } else if (userInputB.length < 15 && toggle === true){
+            userInputB = `${userInputB}${input}`;
+            displayFieldContent = userInputB;
+            refreshDisplayField();
+        }
+}
+
+//stores operator
+function storeUserOperator (input){
+    userOperatorInput = input;
+    toggle = !toggle;
+    console.log(`userOperatorInput is ${userOperatorInput}`);
+    console.log(`toggle is now ${toggle}`);
 }
 
 //clear display and input
 function clearAll(){
     displayFieldContent = '';
-    userInput = '';
+    userInputA = '';
+    userInputB = '';
+    toggle = false;
     refreshDisplayField();
 }
 
 //add a listener to all numeric buttons that returns an integer
-const buttonInputs = document.querySelectorAll('.button.number');
+const buttonInputs = document.querySelectorAll('.button');
 buttonInputs.forEach(element => {
     element.addEventListener('click', (e) => {
-        storeUserInput(parseInt(e.target.innerText));
-        //displayFieldContent = e.target.innerText;
-        //refreshDisplayField();
-        
+        if (e.target.classList.contains('number')){
+            storeUserInput(parseInt(e.target.innerText),toggle);
+        } else if (e.target.classList.contains('operator')) {
+            storeUserOperator(e.target.id);
+        }
+            // console.log((e.target.classList.contains('button')));
     });
 });
 
