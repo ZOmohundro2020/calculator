@@ -4,8 +4,17 @@ const displayDiv = document.getElementById('display');
 
 //store and update user input and then refresh display field
 function storeUserInput (input){
-    userInput = `${userInput}${input}`;
-    displayFieldContent = userInput;
+    if (userInput.length < 15){
+        userInput = `${userInput}${input}`;
+        displayFieldContent = userInput;
+        refreshDisplayField();
+    }
+}
+
+//clear display and input
+function clearAll(){
+    displayFieldContent = '';
+    userInput = '';
     refreshDisplayField();
 }
 
@@ -18,6 +27,11 @@ buttonInputs.forEach(element => {
         //refreshDisplayField();
         
     });
+});
+
+//ac clear functionality
+document.getElementById('ac').addEventListener('click', (e) => {
+    clearAll();
 });
 
 function refreshDisplayField (){
