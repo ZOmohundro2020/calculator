@@ -58,12 +58,20 @@ document.getElementById('ac').addEventListener('click', (e) => {
 document.getElementById('equals').addEventListener('click', (e) => {
     displayFieldContent = operate(userInputA,userInputB,userOperatorInput);
     console.log(`displayFieldContent is ${displayFieldContent}`);
+    userInputA = displayFieldContent;
+    userInputB = '';
+    toggle = false;
     refreshDisplayField();
 });
 
 
 
 function refreshDisplayField (){
+    //keep it within the display for long floats
+    
+    if (displayFieldContent.toString().length > 17){
+        displayFieldContent = displayFieldContent.toString().slice(0,17);
+    }
     displayDiv.textContent = displayFieldContent;
 }
 
