@@ -5,15 +5,15 @@ let userOperatorInput ='';
 let toggle = false;
 const displayDiv = document.getElementById('display');
 
-//store and update user input and then refresh display field
+//store and update user input and then refresh display field. takes in toggle to determine a input or b input
 function storeUserInput (input,toggle){
-    console.log(`input is ${input} toggle is ${toggle}`);
-        if (userInputA.length < 15 && toggle === false){
-            userInputA = `${userInputA}${input}`;
+        if (userInputA.toString().length < 15 && toggle === false){
+            userInputA = Number(`${userInputA}${input}`);
+            //userInputA = Number(userInputA);
             displayFieldContent = userInputA;
             refreshDisplayField();
-        } else if (userInputB.length < 15 && toggle === true){
-            userInputB = `${userInputB}${input}`;
+        } else if (userInputB.toString().length < 15 && toggle === true){
+            userInputB = Number(`${userInputB}${input}`);
             displayFieldContent = userInputB;
             refreshDisplayField();
         }
@@ -22,7 +22,7 @@ function storeUserInput (input,toggle){
 //stores operator
 function storeUserOperator (input){
     userOperatorInput = input;
-    toggle = !toggle;
+    toggle = !toggle; //flip toggle so numeric input switches
     console.log(`userOperatorInput is ${userOperatorInput}`);
     console.log(`toggle is now ${toggle}`);
 }
@@ -36,7 +36,7 @@ function clearAll(){
     refreshDisplayField();
 }
 
-//add a listener to all numeric buttons that returns an integer
+//add a listener to all buttons
 const buttonInputs = document.querySelectorAll('.button');
 buttonInputs.forEach(element => {
     element.addEventListener('click', (e) => {
@@ -53,6 +53,15 @@ buttonInputs.forEach(element => {
 document.getElementById('ac').addEventListener('click', (e) => {
     clearAll();
 });
+
+//equals functionality
+document.getElementById('equals').addEventListener('click', (e) => {
+    displayFieldContent = operate(userInputA,userInputB,userOperatorInput);
+    console.log(`displayFieldContent is ${displayFieldContent}`);
+    refreshDisplayField();
+});
+
+
 
 function refreshDisplayField (){
     displayDiv.textContent = displayFieldContent;
