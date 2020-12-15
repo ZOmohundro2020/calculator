@@ -8,16 +8,25 @@ const displayDiv = document.getElementById('display');
 //store and update user input and then refresh display field. takes in toggle to determine a input or b input
 function storeUserInput (input,toggle){
         if (userInputA.toString().length < 15 && toggle === false){
-            userInputA = Number(`${userInputA}${input}`);
-            //userInputA = Number(userInputA);
+            (input == '.') ? userInputA = (`${userInputA}${input}`) //leave input alone if decimal
+                : userInputA = Number(`${userInputA}${input}`); //convert it to number if no decimal
             displayFieldContent = userInputA;
             refreshDisplayField();
         } else if (userInputB.toString().length < 15 && toggle === true){
-            userInputB = Number(`${userInputB}${input}`);
+            (input == '.') ? userInputB = (`${userInputB}${input}`)
+                : userInputB = Number(`${userInputB}${input}`);
             displayFieldContent = userInputB;
             refreshDisplayField();
         }
 }
+
+//decimal functionality
+document.getElementById('decimal').addEventListener('click', (e) => {    
+    if (userInputA.toString().indexOf(".") === -1 && toggle === false){
+        storeUserInput('.',toggle);
+    } else if (userInputB.toString().indexOf(".") === -1 && toggle === true){
+        storeUserInput('.',toggle);
+}});
 
 //stores operator
 function storeUserOperator (input){
@@ -63,6 +72,7 @@ document.getElementById('equals').addEventListener('click', (e) => {
     toggle = false;
     refreshDisplayField();
 });
+
 
 
 
