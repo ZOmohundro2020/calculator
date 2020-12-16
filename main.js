@@ -2,13 +2,21 @@ let displayFieldContent = 0;
 let userInputA ='';
 let userInputB ='';
 let userOperatorInput ='';
-let toggle = false;
+let toggle = false; //toggle used to determine A or B input
 const displayDiv = document.getElementById('display');
 
-//store and update user input and then refresh display field. takes in toggle to determine a input or b input
+//next time try parseFloat(INPUT).toFixed(X) where X is the length needed to preserve decimal
+
+
+//store and update user input and then refresh display field. takes in toggle to determine A input or B input
 function storeUserInput (input,toggle){
-        if (userInputA.toString().length < 15 && toggle === false){
-            (input == '.') ? userInputA = (`${userInputA}${input}`) //leave input alone if decimal
+        userInputA_length = userInputA.toString().length;
+        userInputB_length = userInputB.toString().length;
+        if (userInputA_length < 15 && toggle === false){
+            (input == '.' && userInputA == 0) ? userInputA = '0.' 
+                : (input == '.') ? userInputA = (`${userInputA}${input}`) //leave input alone if decimal
+                : (input == 0 && userInputA.toString().indexOf(".") != -1 )//&& userInputA_length < 3)
+                ? userInputA = parseFloat(`${userInputA}${input}`).toFixed(userInputA_length - 1)
                 : userInputA = Number(`${userInputA}${input}`); //convert it to number if no decimal
             displayFieldContent = userInputA;
             refreshDisplayField();
