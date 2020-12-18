@@ -73,15 +73,24 @@ document.getElementById('ac').addEventListener('click', (e) => {
 
 //equals functionality
 document.getElementById('equals').addEventListener('click', (e) => {
+    equals()
+    //     displayFieldContent = operate(userInputA,userInputB,userOperatorInput);
+//     console.log(`displayFieldContent is ${displayFieldContent}`);
+//     userInputA = displayFieldContent;
+//     userInputB = '';
+//     toggle = false;
+//     refreshDisplayField();
+});
+
+//equals
+function equals(){
     displayFieldContent = operate(userInputA,userInputB,userOperatorInput);
     console.log(`displayFieldContent is ${displayFieldContent}`);
     userInputA = displayFieldContent;
     userInputB = '';
     toggle = false;
     refreshDisplayField();
-});
-
-
+}
 
 
 function refreshDisplayField (){
