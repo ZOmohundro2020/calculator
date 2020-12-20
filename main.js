@@ -1,56 +1,56 @@
-let displayFieldContent = 0;
-let userInputA ='';
-let userInputB ='';
-let userOperatorInput ='';
-let toggle = false; //toggle used to determine A or B input
+let userInputA = 0;
+let userInputB = '';
+let userOperatorInput = '';
+let toggle = false; //toggle used to determine A or B input. False is A input.
 const displayDiv = document.getElementById('display');
 
 //next time try parseFloat(INPUT).toFixed(X) where X is the length needed to preserve decimal
 
-
-//store and update user input and then refresh display field. takes in toggle to determine A input or B input
-function storeUserInput (input,toggle){
-        userInputA_length = userInputA.toString().length;
-        userInputB_length = userInputB.toString().length;
-        if (userInputA_length < 15 && toggle === false){
-            (input == '.' && userInputA == 0) ? userInputA = '0.' 
-                : (input == '.') ? userInputA = (`${userInputA}${input}`) //leave input alone if decimal
-                : (input == 0 && userInputA.toString().indexOf(".") != -1 )//&& userInputA_length < 3)
-                ? userInputA = parseFloat(`${userInputA}${input}`).toFixed(userInputA_length - 1)
-                : userInputA = Number(`${userInputA}${input}`); //convert it to number if no decimal
-            displayFieldContent = userInputA;
-            refreshDisplayField();
-        } else if (userInputB.toString().length < 15 && toggle === true){
-            (input == '.') ? userInputB = (`${userInputB}${input}`)
-                : userInputB = Number(`${userInputB}${input}`);
-            displayFieldContent = userInputB;
-            refreshDisplayField();
-        }
+function storeUserInput (num, toggle) {
+    userInputA_length = userInputA.toString().length;
+    userInputB_length = userInputB.toString().length;
+    if (userInputA_length < 15 && toggle === false) {
+        userInputA = Number((`${userInputA}${num}`));;
+        console.log(`userInputA is ${userInputA}`);
+        refreshDisplayField(userInputA);
+    } else if (userInputB_length < 15 && toggle === true) {
+        userInputB = Number((`${userInputB}${num}`));;
+        console.log(`userInputB is ${userInputB}`);
+        refreshDisplayField(userInputB);
+    }
 }
 
 //decimal functionality
 document.getElementById('decimal').addEventListener('click', (e) => {    
     if (userInputA.toString().indexOf(".") === -1 && toggle === false){
-        storeUserInput('.',toggle);
+        userInputA = (`${userInputA}${'.'}`)
+        refreshDisplayField(userInputA);
+
     } else if (userInputB.toString().indexOf(".") === -1 && toggle === true){
-        storeUserInput('.',toggle);
+        userInputB = (`${userInputB}${'.'}`)
+        refreshDisplayField(userInputB);
 }});
 
 //stores operator
 function storeUserOperator (input){
-    userOperatorInput = input;
-    toggle = !toggle; //flip toggle so numeric input switches
-    console.log(`userOperatorInput is ${userOperatorInput}`);
-    console.log(`toggle is now ${toggle}`);
+    console.log(`storeUserOperator input is ${input} userOperatorInput is ${userOperatorInput}`);
+    if (userOperatorInput !== '') { //if userOperatorInput is NOT empty
+        toggle = false;
+        equals();
+    } else {
+        userOperatorInput = input;
+        toggle = !toggle; //flip toggle so numeric input switches
+    //console.log(`toggle is now ${toggle}`);
+    }
 }
 
 //clear display and input
 function clearAll(){
-    displayFieldContent = '';
-    userInputA = '';
+    userInputA = 0;
     userInputB = '';
+    userOperatorInput = '';
     toggle = false;
-    refreshDisplayField();
+    refreshDisplayField(0);
 }
 
 //add a listener to all buttons
@@ -73,36 +73,39 @@ document.getElementById('ac').addEventListener('click', (e) => {
 
 //equals functionality
 document.getElementById('equals').addEventListener('click', (e) => {
-    equals()
-    //     displayFieldContent = operate(userInputA,userInputB,userOperatorInput);
-//     console.log(`displayFieldContent is ${displayFieldContent}`);
-//     userInputA = displayFieldContent;
-//     userInputB = '';
-//     toggle = false;
-//     refreshDisplayField();
+    equals();
 });
 
 //equals
 function equals(){
-    displayFieldContent = operate(userInputA,userInputB,userOperatorInput);
-    console.log(`displayFieldContent is ${displayFieldContent}`);
-    userInputA = displayFieldContent;
+    console.log('in equals()');
+    console.log(`userInputA is ${userInputA}, userInputB is ${userInputB}, userOperatorInput is ${userOperatorInput}`);
+    console.log(`toggle is ${toggle}`);
+    userInputA = operate(userInputA,userInputB,userOperatorInput);
+    refreshDisplayField(userInputA);
+    
+    //resets
+    userInputA = 0;
     userInputB = '';
+    userOperatorInput = '';
     toggle = false;
-    refreshDisplayField();
+
+
+    console.log(`end toggle is ${toggle}`);
+    //refreshDisplayField(userInputA);
 }
 
 
-function refreshDisplayField (){
+function refreshDisplayField (updateDisplayField = 0){
     //keep it within the display for long floats
     
-    if (displayFieldContent.toString().length > 17){
-        displayFieldContent = displayFieldContent.toString().slice(0,17);
-    }
-    displayDiv.textContent = displayFieldContent;
+    // if (updateDisplayField.toString().length > 17){
+    //     updateDisplayField = displayFieldContent.toString().slice(0,17);
+    // }
+    displayDiv.textContent = updateDisplayField;
 }
 
-refreshDisplayField();
+refreshDisplayField(0);
 
 
 //arithmetic functions
@@ -111,13 +114,13 @@ subtract = ((a,b) => a-b);
 multiply = ((a,b) => a*b);
 function divide (a,b) {
     if (b != 0){
-        return a/b;
+        return ((a*10)/(b*10));
     } else {
         return "Divide by 0";
     }
 };
 
-function operate (a,b,operator){
+function operate (a,b,operator = "plus"){
     switch(operator) {
         case "plus":
             answer = add(a,b);
@@ -130,9 +133,10 @@ function operate (a,b,operator){
             break;
         case "divide":
             answer = divide(a,b);
-            break;        
+            break;
+        default:
+            console.log('default case')
     }
     return answer;
 }
 
-//console.log(operate(4,2,"divide"));
