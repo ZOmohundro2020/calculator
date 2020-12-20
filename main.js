@@ -1,10 +1,9 @@
+//global variables
 let userInputA = 0;
-let userInputB = '';
+let userInputB = 0;
 let userOperatorInput = '';
 let toggle = false; //toggle used to determine A or B input. False is A input.
-const displayDiv = document.getElementById('display');
-
-//next time try parseFloat(INPUT).toFixed(X) where X is the length needed to preserve decimal
+const displayDiv = document.getElementById('display'); //where text is shown
 
 function storeUserInput (num, toggle) {
     userInputA_length = userInputA.toString().length;
@@ -34,20 +33,23 @@ document.getElementById('decimal').addEventListener('click', (e) => {
 //stores operator
 function storeUserOperator (input){
     console.log(`storeUserOperator input is ${input} userOperatorInput is ${userOperatorInput}`);
+    
+    
     if (userOperatorInput !== '') { //if userOperatorInput is NOT empty
-        toggle = false;
-        equals();
+        userInputA = operate(userInputA,userInputB,userOperatorInput);
+        refreshDisplayField(userInputA);
+        userInputB = 0;
+        toggle = true;
     } else {
         userOperatorInput = input;
         toggle = !toggle; //flip toggle so numeric input switches
-    //console.log(`toggle is now ${toggle}`);
     }
 }
 
 //clear display and input
 function clearAll(){
     userInputA = 0;
-    userInputB = '';
+    userInputB = 0;
     userOperatorInput = '';
     toggle = false;
     refreshDisplayField(0);
@@ -77,35 +79,29 @@ document.getElementById('equals').addEventListener('click', (e) => {
 });
 
 //equals
-function equals(){
-    console.log('in equals()');
-    console.log(`userInputA is ${userInputA}, userInputB is ${userInputB}, userOperatorInput is ${userOperatorInput}`);
-    console.log(`toggle is ${toggle}`);
+function equals(storedToggle = toggle){
     userInputA = operate(userInputA,userInputB,userOperatorInput);
     refreshDisplayField(userInputA);
     
     //resets
-    userInputA = 0;
-    userInputB = '';
-    userOperatorInput = '';
+    
+    userInputB = 0;
     toggle = false;
-
-
-    console.log(`end toggle is ${toggle}`);
-    //refreshDisplayField(userInputA);
 }
 
 
 function refreshDisplayField (updateDisplayField = 0){
-    //keep it within the display for long floats
+    /* fix this section later to deal with long floats
+    keep it within the display for long floats
     
-    // if (updateDisplayField.toString().length > 17){
-    //     updateDisplayField = displayFieldContent.toString().slice(0,17);
-    // }
+    if (updateDisplayField.toString().length > 17){
+        updateDisplayField = displayFieldContent.toString().slice(0,17);
+    }
+    */
     displayDiv.textContent = updateDisplayField;
 }
 
-refreshDisplayField(0);
+
 
 
 //arithmetic functions
@@ -114,7 +110,7 @@ subtract = ((a,b) => a-b);
 multiply = ((a,b) => a*b);
 function divide (a,b) {
     if (b != 0){
-        return ((a*10)/(b*10));
+        return ((a*10)/(b*10)); //fix this later to handle floats better
     } else {
         return "Divide by 0";
     }
@@ -140,3 +136,4 @@ function operate (a,b,operator = "plus"){
     return answer;
 }
 
+refreshDisplayField(0);
