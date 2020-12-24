@@ -10,25 +10,38 @@ function controller (unparsedInput) {
     let inputType = typeof(unparsedInput);
     if (inputType === "number") {
         storeUserInput(unparsedInput, toggle);
+        console.log(`in number, toggle is ${toggle}`);
     } else if (inputType === "string") {
         if (unparsedInput === "plus" ||
             unparsedInput === "subtract" ||
             unparsedInput === "multiply" ||
             unparsedInput === "divide") {
                 if (userOperatorInput !== '') {
+                    if (userOperatorInput !== unparsedInput) {
+                        console.log('userOperatorInput is not equal to unparsedInput');
+                        
+                    } else {
+                    console.log('userOperatorInput is NOT blank')
                     userInputA = operate(userInputA,userInputB,userOperatorInput);
                     refreshDisplayField(userInputA);
                     userInputB = 0;
-                    toggle = !toggle;
+                    toggle = true;
+                    }
                 }
+                if (userOperatorInput === ''){
+                    console.log('userOperatorInput is blank')
+                    toggle = true;
+                }
+
             storeUserOperator(unparsedInput);
-            toggle = !toggle;
+            //toggle = !toggle;
 
         } else if (unparsedInput = 'equals' && userOperatorInput !== '') {
             console.log('in controller equals');
             userInputA = operate(userInputA,userInputB,userOperatorInput);
             refreshDisplayField(userInputA);
             userInputB = 0;
+            userOperatorInput = '';
             toggle = true;
         }
     }
@@ -58,7 +71,6 @@ document.getElementById('decimal').addEventListener('click', (e) => {
 
     } else if (userInputB.toString().indexOf(".") === -1 && toggle === true){
         userInputB = (`${userInputB}${'.'}`)
-        userInputB_hasChanged = true;
         refreshDisplayField(userInputB);
 }});
 
