@@ -3,7 +3,24 @@ let userInputA = 0;
 let userInputB = 0;
 let userOperatorInput = '';
 let toggle = false; //toggle used to determine A or B input. False is A input.
+let userInputB_hasChanged = false;
 const displayDiv = document.getElementById('display'); //where text is shown
+
+//main controller function
+function controller (unparsedInput) {
+    let inputType = typeof(unparsedInput);
+    console.log(inputType);
+    if (inputType === "number") {
+        storeUserInput(unparsedInput, toggle);
+    } else if (inputType === "string") {
+        if (unparsedInput === "plus" ||
+            unparsedInput === "subtract" ||
+            unparsedInput === "multiply" ||
+            unparsedInput === "divide") {
+            storeUserOperator(unparsedInput);
+        }
+    }
+}
 
 function storeUserInput (num, toggle) {
     userInputA_length = userInputA.toString().length;
@@ -14,6 +31,7 @@ function storeUserInput (num, toggle) {
         refreshDisplayField(userInputA);
     } else if (userInputB_length < 15 && toggle === true) {
         userInputB = Number((`${userInputB}${num}`));;
+        userInputB_hasChanged = true;
         console.log(`userInputB is ${userInputB}`);
         refreshDisplayField(userInputB);
     }
@@ -27,21 +45,24 @@ document.getElementById('decimal').addEventListener('click', (e) => {
 
     } else if (userInputB.toString().indexOf(".") === -1 && toggle === true){
         userInputB = (`${userInputB}${'.'}`)
+        userInputB_hasChanged = true;
         refreshDisplayField(userInputB);
 }});
 
 //stores operator
 function storeUserOperator (input){
-    console.log(`storeUserOperator input is ${input} userOperatorInput is ${userOperatorInput}`);
+    //userOperatorInput = input;
+    console.log(`storeUserOperator input paran is ${input} userOperatorInput is ${userOperatorInput}`);
     
     
-    if (userOperatorInput !== '') { //if userOperatorInput is NOT empty
+    if (userOperatorInput !== '' && userInputB_hasChanged !== false) { //if userOperatorInput is NOT empty
         userInputA = operate(userInputA,userInputB,userOperatorInput);
+        userOperatorInput = input;
         refreshDisplayField(userInputA);
-        userInputB = 0;
+        userInputB = 0; //check this
         toggle = true;
     } else {
-        userOperatorInput = input;
+        // userOperatorInput = input;
         toggle = !toggle; //flip toggle so numeric input switches
     }
 }
@@ -50,6 +71,7 @@ function storeUserOperator (input){
 function clearAll(){
     userInputA = 0;
     userInputB = 0;
+    userInputB_hasChanged = false;
     userOperatorInput = '';
     toggle = false;
     refreshDisplayField(0);
@@ -60,9 +82,11 @@ const buttonInputs = document.querySelectorAll('.button');
 buttonInputs.forEach(element => {
     element.addEventListener('click', (e) => {
         if (e.target.classList.contains('number')){
-            storeUserInput(parseInt(e.target.innerText),toggle);
+            //storeUserInput(parseInt(e.target.innerText),toggle); //original code
+            controller(parseInt(e.target.innerText));
         } else if (e.target.classList.contains('operator')) {
-            storeUserOperator(e.target.id);
+            //storeUserOperator(e.target.id); //original code
+            controller(e.target.id);
         }
             // console.log((e.target.classList.contains('button')));
     });
@@ -80,10 +104,15 @@ document.getElementById('equals').addEventListener('click', (e) => {
 
 //equals
 function equals(storedToggle = toggle){
-    userInputA = operate(userInputA,userInputB,userOperatorInput);
-    refreshDisplayField(userInputA);
+    if (userInputB_hasChanged === true){
+        userInputA = operate(userInputA,userInputB,userOperatorInput);
+        refreshDisplayField(userInputA);
+    }
     
-    //resets
+    
+
+    
+    //resets check this
     
     userInputB = 0;
     toggle = false;
