@@ -23,7 +23,7 @@ function controller (unparsedInput) {
                         refreshDisplayField(userInputA);
                         userInputB = 0;
                         toggle = true;
-                        
+
 
                     } else {
                     console.log('userOperatorInput is NOT blank')
@@ -121,13 +121,11 @@ document.getElementById('equals').addEventListener('click', (e) => {
 
 
 function refreshDisplayField (updateDisplayField = 0){
-    /* fix this section later to deal with long floats
-    keep it within the display for long floats
     
     if (updateDisplayField.toString().length > 17){
-        updateDisplayField = displayFieldContent.toString().slice(0,17);
+        updateDisplayField = updateDisplayField.toString().slice(0,17);
     }
-    */
+    
     displayDiv.textContent = updateDisplayField;
 }
 
