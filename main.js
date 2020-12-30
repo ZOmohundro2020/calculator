@@ -19,7 +19,12 @@ function controller (unparsedInput) {
                 if (userOperatorInput !== '') {
                     if (userOperatorInput !== unparsedInput) {
                         console.log('userOperatorInput is not equal to unparsedInput');
+                        userInputA = operate(userInputA,userInputB,userOperatorInput);
+                        refreshDisplayField(userInputA);
+                        userInputB = 0;
+                        toggle = true;
                         
+
                     } else {
                     console.log('userOperatorInput is NOT blank')
                     userInputA = operate(userInputA,userInputB,userOperatorInput);
