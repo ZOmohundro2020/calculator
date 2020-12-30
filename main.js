@@ -56,12 +56,22 @@ function controller (unparsedInput) {
 function storeUserInput (num, toggle) {
     userInputA_length = userInputA.toString().length;
     userInputB_length = userInputB.toString().length;
+    console.log(`userInputA_length is ${userInputA_length}`);
     if (userInputA_length < 15 && toggle === false) {
+        if (num === 0 && userInputA.toString().indexOf(".") != -1) {
+            //fix this part
+            userInputA = Number((`${userInputA}${num}`)).toFixed(userInputA_length - (Math.ceil(userInputA_length/2)));
+        } else {
         userInputA = Number((`${userInputA}${num}`));;
+        }
         console.log(`userInputA is ${userInputA}`);
         refreshDisplayField(userInputA);
     } else if (userInputB_length < 15 && toggle === true) {
+        if (num === 0 && userInputB.toString().indexOf(".") != -1) {
+            userInputB = Number((`${userInputB}${num}`)).toFixed(userInputB_length - 1);;
+        } else {
         userInputB = Number((`${userInputB}${num}`));;
+        }
         userInputB_hasChanged = true;
         console.log(`userInputB is ${userInputB}`);
         refreshDisplayField(userInputB);
