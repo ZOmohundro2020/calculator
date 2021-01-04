@@ -67,10 +67,17 @@ function storeUserInput (num, toggle) {
 //decimal functionality
 document.getElementById('decimal').addEventListener('click', (e) => {    
     if (userInputA.toString().indexOf(".") === -1 && toggle === false){
+        //add a leading zero if decimal is needed
+        if (userInputA === '') {
+            userInputA = 0;
+        }
         userInputA = (`${userInputA}${'.'}`)
         refreshDisplayField(userInputA);
 
     } else if (userInputB.toString().indexOf(".") === -1 && toggle === true){
+        if (userInputB === '') {
+            userInputB = 0;
+        }
         userInputB = (`${userInputB}${'.'}`)
         refreshDisplayField(userInputB);
 }});
