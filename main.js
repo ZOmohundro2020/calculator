@@ -24,11 +24,11 @@ function controller (unparsedInput) {
                         userInputB = '';
                         toggle = true;
                     } else {
-                    console.log('userOperatorInput is NOT blank')
-                    userInputA = operate(userInputA,userInputB,userOperatorInput);
-                    refreshDisplayField(userInputA);
-                    userInputB = '';
-                    toggle = true;
+                        console.log('userOperatorInput is NOT blank')
+                        userInputA = operate(userInputA,userInputB,userOperatorInput);
+                        refreshDisplayField(userInputA);
+                        userInputB = '';
+                        toggle = true;
                     }
                 }
                 if (userOperatorInput === ''){
@@ -118,21 +118,24 @@ document.getElementById('ac').addEventListener('click', (e) => {
 
 //equals functionality
 document.getElementById('equals').addEventListener('click', (e) => {
-    //equals(); //original code
     controller('equals');
 });
 
 
 function refreshDisplayField (updateDisplayField = 0){
-    
-    if (updateDisplayField.toString().length > 17){
-        updateDisplayField = updateDisplayField.toString().slice(0,17);
+    console.log(`updateDisplayField is ${updateDisplayField}`);
+    if (updateDisplayField.toString().length > 15){
+        //updateDisplayField = round((updateDisplayField),15);
+        //updateDisplayField = updateDisplayField.toString().slice(0,20);
+        updateDisplayField = updateDisplayField.toExponential(10);
     }
     
     displayDiv.textContent = updateDisplayField;
 }
 
-
+function round (value, decimals) {
+    return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+}
 
 
 //arithmetic functions
