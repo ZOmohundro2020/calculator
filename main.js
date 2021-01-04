@@ -1,6 +1,6 @@
 //global variables
-let userInputA = 0;
-let userInputB = 0;
+let userInputA = '';
+let userInputB = '';
 let userOperatorInput = '';
 let toggle = false; //toggle used to determine A or B input. False is A input.
 const displayDiv = document.getElementById('display'); //where text is shown
@@ -21,15 +21,13 @@ function controller (unparsedInput) {
                         console.log('userOperatorInput is not equal to unparsedInput');
                         userInputA = operate(userInputA,userInputB,userOperatorInput);
                         refreshDisplayField(userInputA);
-                        userInputB = 0;
+                        userInputB = '';
                         toggle = true;
-
-
                     } else {
                     console.log('userOperatorInput is NOT blank')
                     userInputA = operate(userInputA,userInputB,userOperatorInput);
                     refreshDisplayField(userInputA);
-                    userInputB = 0;
+                    userInputB = '';
                     toggle = true;
                     }
                 }
@@ -45,7 +43,7 @@ function controller (unparsedInput) {
             console.log('in controller equals');
             userInputA = operate(userInputA,userInputB,userOperatorInput);
             refreshDisplayField(userInputA);
-            userInputB = 0;
+            userInputB = '';
             userOperatorInput = '';
             toggle = true;
         }
@@ -56,24 +54,12 @@ function controller (unparsedInput) {
 function storeUserInput (num, toggle) {
     userInputA_length = userInputA.toString().length;
     userInputB_length = userInputB.toString().length;
-    console.log(`userInputA_length is ${userInputA_length}`);
+    //console.log(`userInputA_length is ${userInputA_length}`);
     if (userInputA_length < 15 && toggle === false) {
-        if (num === 0 && userInputA.toString().indexOf(".") != -1) {
-            //fix this part
-            userInputA = Number((`${userInputA}${num}`)).toFixed(userInputA_length - (Math.ceil(userInputA_length/2)));
-        } else {
-        userInputA = Number((`${userInputA}${num}`));;
-        }
-        console.log(`userInputA is ${userInputA}`);
+        userInputA = (`${userInputA}${num}`);
         refreshDisplayField(userInputA);
     } else if (userInputB_length < 15 && toggle === true) {
-        if (num === 0 && userInputB.toString().indexOf(".") != -1) {
-            userInputB = Number((`${userInputB}${num}`)).toFixed(userInputB_length - 1);;
-        } else {
-        userInputB = Number((`${userInputB}${num}`));;
-        }
-        userInputB_hasChanged = true;
-        console.log(`userInputB is ${userInputB}`);
+        userInputB = (`${userInputB}${num}`);
         refreshDisplayField(userInputB);
     }
 }
@@ -96,8 +82,8 @@ function storeUserOperator (input) {
 
 //clear display and input
 function clearAll(){
-    userInputA = 0;
-    userInputB = 0;
+    userInputA = '';
+    userInputB = '';
     userOperatorInput = '';
     toggle = false;
     refreshDisplayField(0);
@@ -155,6 +141,8 @@ function divide (a,b) {
 };
 
 function operate (a,b,operator = "plus"){
+    a = Number(a);
+    b = Number(b);
     switch(operator) {
         case "plus":
             answer = add(a,b);
