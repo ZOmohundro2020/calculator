@@ -20,6 +20,10 @@
     outline: none;
 } */
 
+body {
+    touch-action: manipulation;
+}
+
 #plus, #equals {
     grid-row-end: span 2;
 }
